@@ -1,7 +1,7 @@
 package dao;
 
 import model.EmailFornecedor;
-import apoio.ConexaoBD;
+import model.Fornecedor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,19 +10,21 @@ import java.util.List;
 
 public class EmailDAO {
 
-    public static List<EmailFornecedor> selectTodosEmailPorIdFornecedor(Integer idFornecedor) throws Exception {
+    public static List<EmailFornecedor> selectTodosEmailPorIdFornecedor(Integer idFornecedor, Connection conexao) throws Exception {
         List<EmailFornecedor> emails = new ArrayList<>();
         String sql = "SELECT emailFornecedor, idFornecedor FROM emailfornecedor WHERE idFornecedor = ?";
 
-        try (Connection conn = new ConexaoBD().getConexaoComBD();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, idFornecedor);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     EmailFornecedor emailFornecedor = new EmailFornecedor();
                     emailFornecedor.setEmailFornecedor(rs.getString("emailFornecedor"));
-                    emailFornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+
+                    Fornecedor fornecedor = new Fornecedor();
+                    fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+                    emailFornecedor.setFornecedor(fornecedor);
+
                     emails.add(emailFornecedor);
                 }
             }
@@ -33,17 +35,17 @@ public class EmailDAO {
         return emails;
     }
 
-    public static void insertEmailsFornecedor(Integer idFornecedor, List<EmailFornecedor> emails, Connection conexao) throws Exception {
+    public static void insertEmailsFornecedor(Fornecedor fornecedor, List<EmailFornecedor> emails, Connection conexao) throws Exception {
         String sql = "INSERT INTO emailfornecedor (emailFornecedor, idFornecedor) VALUES (?, ?)";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             for (EmailFornecedor email : emails) {
                 stmt.setString(1, email.getEmailFornecedor());
-                stmt.setInt(2, idFornecedor);
+                stmt.setInt(2, fornecedor.getIdFornecedor());
                 stmt.addBatch();
             }
             stmt.executeBatch();
         } catch (Exception e) {
-            throw new Exception("Erro ao inserir emails para o fornecedor com ID: " + idFornecedor, e);
+            throw new Exception("Erro ao inserir emails para o fornecedor com ID: " + fornecedor.getIdFornecedor(), e);
         }
     }
 
@@ -55,7 +57,11 @@ public class EmailDAO {
                 if (rs.next()) {
                     EmailFornecedor emailFornecedor = new EmailFornecedor();
                     emailFornecedor.setEmailFornecedor(rs.getString("emailFornecedor"));
-                    emailFornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+
+                    Fornecedor fornecedor = new Fornecedor();
+                    fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+                    emailFornecedor.setFornecedor(fornecedor);
+
                     return emailFornecedor;
                 }
             }

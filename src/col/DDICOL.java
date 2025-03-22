@@ -2,6 +2,7 @@ package col;
 
 import model.DDI;
 import dao.DDIDao;
+import java.sql.Connection;
 
 public class DDICOL {
 
@@ -11,7 +12,7 @@ public class DDICOL {
                 !ddi.getNumeroDDI().trim().isEmpty();
     }
 
-    public static boolean ddiExiste(DDI ddi) throws Exception {
-        return ddiValido(ddi) && DDIDao.selectDDIPorNumero(ddi.getNumeroDDI()) != null;
+    public static boolean ddiExiste(DDI ddi, Connection conexao) throws Exception {
+        return ddiValido(ddi) && DDIDao.selectDDIPorNumero(ddi.getNumeroDDI(), conexao) != null;
     }
 }

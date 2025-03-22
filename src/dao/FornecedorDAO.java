@@ -58,8 +58,8 @@ public class FornecedorDAO {
     }
 
     public Fornecedor selecionarFornecedorPorCNPJ(String cnpj, Connection conexao) throws SQLException {
-        String sql = "SELECT idFornecedor, cnpjfornecedor, nomefornecedor, idEndereco, complementoEndereco, numeroEndereco, saldoPagar " +
-                "FROM fornecedor WHERE cnpj_fornecedor = ?";
+        String sql = "SELECT idFornecedor, cnpjFornecedor, nomeFornecedor, idEndereco, complementoEndereco, numeroEndereco, saldoPagar " +
+                "FROM fornecedor WHERE cnpjFornecedor = ?";
 
         Fornecedor fornecedor = null;
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {

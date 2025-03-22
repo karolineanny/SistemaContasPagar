@@ -24,7 +24,7 @@ public class LogradouroDAO {
                 if (resultSet.next()) {
                     Logradouro logradouro = new Logradouro();
                     logradouro.setIdLogradouro(resultSet.getInt("idLogradouro"));
-                    logradouro.setNome(resultSet.getString("logradouro_nome"));
+                    logradouro.setNome(resultSet.getString("logradouroNome"));
                     logradouro.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
                     return logradouro;
                 }
@@ -48,7 +48,7 @@ public class LogradouroDAO {
             while (resultSet.next()) {
                 Logradouro logradouro = new Logradouro();
                 logradouro.setIdLogradouro(resultSet.getInt("idLogradouro"));
-                logradouro.setNome(resultSet.getString("logradouro_nome"));
+                logradouro.setNome(resultSet.getString("logradouroNome"));
                 logradouro.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
                 logradouros.add(logradouro);
             }

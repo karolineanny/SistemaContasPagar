@@ -10,18 +10,16 @@ import model.Bairro;
 
 public class BairroDAO {
 
-    public Bairro selecionarBairroPorId(Long id, Connection conexao) throws SQLException {
-        String sql = "SELECT id_bairro, nome FROM bairro WHERE id_bairro = ?;";
+    public Bairro selecionarBairroPorId(Integer id, Connection conexao) throws SQLException {
+        String sql = "SELECT idBairro, nome FROM bairro WHERE idBairro = ?;";
 
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
-            preparedStatement.setLong(1, id);
+            preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-
                     Bairro bairro = new Bairro();
-                    bairro.setIdBairro((int)resultSet.getLong("id_bairro"));
+                    bairro.setIdBairro(resultSet.getInt("idBairro"));
                     bairro.setNome(resultSet.getString("nome"));
-
                     return bairro;
                 }
             }
@@ -31,10 +29,10 @@ public class BairroDAO {
 
     public List<Bairro> selecionarTodosBairros(Connection conexao) throws SQLException {
         String sql = """
-        SELECT b.id_bairro, b.nome AS bairro_nome
-        FROM bairro b
-        ORDER BY b.nome;
-    """;
+            SELECT b.idBairro, b.nome AS bairroNome
+            FROM bairro b
+            ORDER BY b.nome;
+            """;
 
         List<Bairro> bairros = new ArrayList<>();
 
@@ -43,14 +41,11 @@ public class BairroDAO {
 
             while (resultSet.next()) {
                 Bairro bairro = new Bairro();
-                bairro.setIdBairro((int)resultSet.getLong("id_bairro"));
-                bairro.setNome(resultSet.getString("bairro_nome"));
-
+                bairro.setIdBairro(resultSet.getInt("idBairro"));
+                bairro.setNome(resultSet.getString("bairroNome"));
                 bairros.add(bairro);
             }
         }
-
         return bairros;
     }
-
 }

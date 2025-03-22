@@ -1,26 +1,14 @@
 package model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "endereco")
 public class Endereco {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEndereco")
     private Integer idEndereco;
 
-    @Column(name = "cep", length = 20)
     private String cep;
 
-    @Column(name = "idCidade")
     private Integer idCidade;
 
-    @Column(name = "idLogradouro")
     private Integer idLogradouro;
 
-    @Column(name = "idBairro")
     private Integer idBairro;
 
     public Endereco() {

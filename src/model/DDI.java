@@ -2,12 +2,8 @@ package model;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "ddi")
 public class DDI {
 
-    @Id
-    @Column(name = "numeroDDI", length = 5, nullable = false)
     private String numeroDDI;
 
     public DDI() {

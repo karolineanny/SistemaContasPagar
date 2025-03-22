@@ -1,20 +1,11 @@
 package model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "logradouro")
 public class Logradouro {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idLogradouro")
     private Integer idLogradouro;
 
-    @Column(name = "nome", length = 100)
     private String nome;
 
-    @Column(name = "siglaTipoLogradouro", length = 10)
     private String siglaTipoLogradouro;
 
     public Logradouro() {

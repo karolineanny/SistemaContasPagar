@@ -1,16 +1,9 @@
 package model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "unidadefederativa")
 public class UnidadeFederativa {
 
-    @Id
-    @Column(name = "siglaUF", length = 2, nullable = false)
     private String siglaUF;
 
-    @Column(name = "nomeUF", length = 100)
     private String nomeUF;
 
     public UnidadeFederativa() {

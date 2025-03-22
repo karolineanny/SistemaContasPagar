@@ -12,11 +12,11 @@ public class CidadeDAO {
 
     public Cidade selecionarCidadePorId(Long id, Connection conexao) throws SQLException {
         String sql = """
-            SELECT c.id_cidade        AS cidade_id,
+            SELECT c.idCidade        AS cidade_id,
                    c.nome             AS cidade_nome,
-                   c.sigla_uf         AS uf_sigla
+                   c.siglaUf         AS uf_sigla
             FROM cidade c
-            WHERE c.id_cidade = ?;
+            WHERE c.idCidade = ?;
         """;
 
         try (PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -25,9 +25,9 @@ public class CidadeDAO {
                 if (rs.next()) {
                     Cidade cidade = new Cidade();
                     // A model Cidade tem idCidade como Integer
-                    cidade.setIdCidade(rs.getInt("cidade_id"));
-                    cidade.setNome(rs.getString("cidade_nome"));
-                    cidade.setSiglaUF(rs.getString("uf_sigla"));
+                    cidade.setIdCidade(rs.getInt("cidadeId"));
+                    cidade.setNome(rs.getString("cidadeNome"));
+                    cidade.setSiglaUF(rs.getString("ufSigla"));
                     return cidade;
                 }
             }
@@ -37,9 +37,9 @@ public class CidadeDAO {
 
     public List<Cidade> selecionarTodasCidades(Connection conexao) throws SQLException {
         String sql = """
-            SELECT c.id_cidade,
+            SELECT c.idCidade,
                    c.nome       AS cidade_nome,
-                   c.sigla_uf   AS uf_sigla
+                   c.siglaUf   AS uf_sigla
             FROM cidade c
             ORDER BY c.nome;
         """;
@@ -51,9 +51,9 @@ public class CidadeDAO {
 
             while (rs.next()) {
                 Cidade cidade = new Cidade();
-                cidade.setIdCidade(rs.getInt("id_cidade"));
-                cidade.setNome(rs.getString("cidade_nome"));
-                cidade.setSiglaUF(rs.getString("uf_sigla"));
+                cidade.setIdCidade(rs.getInt("idCidade"));
+                cidade.setNome(rs.getString("cidadeNome"));
+                cidade.setSiglaUF(rs.getString("ufSigla"));
                 cidades.add(cidade);
             }
         }

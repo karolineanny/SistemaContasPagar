@@ -69,7 +69,7 @@ public class AppContasPagar {
         System.out.println("\n=== Consulta das Faturas a Pagar de um Fornecedor ===");
         System.out.println("Fornecedor: " + fornecedor.getNomeFornecedor());
         System.out.println("CNPJ: " + fornecedor.getCnpjFornecedor());
-        System.out.println("Saldo a Pagar (somatório das faturas): R$ " + saldoTotal);
+        System.out.println("Saldo a Pagar: R$ " + saldoTotal);
 
         if (faturas.isEmpty()) {
             System.out.println("Nenhuma fatura encontrada para esse fornecedor.");

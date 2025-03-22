@@ -1,13 +1,7 @@
 package model;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "ddd")
 public class DDD {
 
-    @Id
-    @Column(name = "numeroDDD", length = 5, nullable = false)
     private String numeroDDD;
 
     public DDD() {

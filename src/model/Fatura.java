@@ -1,33 +1,16 @@
 package model;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "fatura")
 public class Fatura {
 
-    @Id
-    @Column(name = "numeroFatura")
     private Integer numeroFatura;
-
-    @Column(name = "dataLancamento")
     private LocalDate dataLancamento;
-
-    @Column(name = "dataVencimento")
     private LocalDate dataVencimento;
-
-    @Column(name = "idFornecedor")
     private Integer idFornecedor;
-
-    @Column(name = "idMotivoFatura")
     private Integer idMotivoFatura;
-
-    @Column(name = "valorTotal", precision = 10, scale = 2)
     private BigDecimal valorTotal;
-
-    @Column(name = "saldo", precision = 10, scale = 2)
     private BigDecimal saldo;
 
     public Fatura() {
@@ -44,61 +27,33 @@ public class Fatura {
         this.saldo = saldo;
     }
 
-    public Integer getNumeroFatura() {
-        return numeroFatura;
-    }
+    public Integer getNumeroFatura() { return numeroFatura; }
 
-    public void setNumeroFatura(Integer numeroFatura) {
-        this.numeroFatura = numeroFatura;
-    }
+    public void setNumeroFatura(Integer numeroFatura) { this.numeroFatura = numeroFatura; }
 
-    public LocalDate getDataLancamento() {
-        return dataLancamento;
-    }
+    public LocalDate getDataLancamento() { return dataLancamento; }
 
-    public void setDataLancamento(LocalDate dataLancamento) {
-        this.dataLancamento = dataLancamento;
-    }
+    public void setDataLancamento(LocalDate dataLancamento) { this.dataLancamento = dataLancamento; }
 
-    public LocalDate getDataVencimento() {
-        return dataVencimento;
-    }
+    public LocalDate getDataVencimento() { return dataVencimento; }
 
-    public void setDataVencimento(LocalDate dataVencimento) {
-        this.dataVencimento = dataVencimento;
-    }
+    public void setDataVencimento(LocalDate dataVencimento) { this.dataVencimento = dataVencimento; }
 
-    public Integer getIdFornecedor() {
-        return idFornecedor;
-    }
+    public Integer getIdFornecedor() { return idFornecedor; }
 
-    public void setIdFornecedor(Integer idFornecedor) {
-        this.idFornecedor = idFornecedor;
-    }
+    public void setIdFornecedor(Integer idFornecedor) { this.idFornecedor = idFornecedor; }
 
-    public Integer getIdMotivoFatura() {
-        return idMotivoFatura;
-    }
+    public Integer getIdMotivoFatura() { return idMotivoFatura; }
 
-    public void setIdMotivoFatura(Integer idMotivoFatura) {
-        this.idMotivoFatura = idMotivoFatura;
-    }
+    public void setIdMotivoFatura(Integer idMotivoFatura) { this.idMotivoFatura = idMotivoFatura; }
 
-    public BigDecimal getValorTotal() {
-        return valorTotal;
-    }
+    public BigDecimal getValorTotal() { return valorTotal; }
 
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
-    }
+    public void setValorTotal(BigDecimal valorTotal) { this.valorTotal = valorTotal; }
 
-    public BigDecimal getSaldo() {
-        return saldo;
-    }
+    public BigDecimal getSaldo() { return saldo; }
 
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
-    }
+    public void setSaldo(BigDecimal saldo) { this.saldo = saldo; }
 
     @Override
     public String toString() {

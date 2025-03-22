@@ -1,33 +1,21 @@
 package model;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "fornecedor")
 public class Fornecedor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idFornecedor")
     private Integer idFornecedor;
 
-    @Column(name = "nomeFornecedor", length = 100)
     private String nomeFornecedor;
 
-    @Column(name = "cnpjFornecedor", length = 20)
     private String cnpjFornecedor;
 
-    @Column(name = "idEndereco")
     private Integer idEndereco;
 
-    @Column(name = "complementoEndereco", length = 100)
     private String complementoEndereco;
 
-    @Column(name = "numeroEndereco", length = 10)
     private String numeroEndereco;
 
-    @Column(name = "saldoPagar", precision = 10, scale = 2)
     private BigDecimal saldoPagar;
 
     public Fornecedor() {

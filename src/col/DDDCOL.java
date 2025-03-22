@@ -2,6 +2,7 @@ package col;
 
 import model.DDD;
 import dao.DDDDao;
+import java.sql.Connection;
 
 public class DDDCOL {
 
@@ -11,7 +12,7 @@ public class DDDCOL {
                 !ddd.getNumeroDDD().trim().isEmpty();
     }
 
-    public static boolean dddExiste(DDD ddd) throws Exception {
-        return dddValido(ddd) && DDDDao.selectDDDPorNumero(ddd.getNumeroDDD()) != null;
+    public static boolean dddExiste(DDD ddd, Connection conexao) throws Exception {
+        return dddValido(ddd) && DDDDao.selectDDDPorNumero(ddd.getNumeroDDD(), conexao) != null;
     }
 }
