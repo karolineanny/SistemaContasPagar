@@ -14,6 +14,12 @@ public class EnderecoCOL {
 
     public static boolean enderecoValido(Endereco endereco) {
         return endereco != null &&
-                cepValido(endereco.getCep());
+                cepValido(endereco.getCep()) &&
+                endereco.getCidade() != null &&
+                idValido(endereco.getCidade().getIdCidade()) &&
+                endereco.getLogradouro() != null &&
+                idValido(endereco.getLogradouro().getIdLogradouro()) &&
+                endereco.getBairro() != null &&
+                idValido(endereco.getBairro().getIdBairro());
     }
 }

@@ -1,6 +1,8 @@
 package col;
 
 import model.Fatura;
+import model.Fornecedor;
+import model.MotivoFatura;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -26,9 +28,13 @@ public class FaturaCOL {
         boolean valorValido = fatura.getValorTotal() != null &&
                 fatura.getValorTotal().compareTo(BigDecimal.ZERO) > 0;
 
-        boolean motivoValido = fatura.getIdMotivoFatura() != null && fatura.getIdMotivoFatura() > 0;
+        boolean motivoValido = fatura.getMotivoFatura() != null &&
+                fatura.getMotivoFatura().getIdMotivoFatura() != null &&
+                fatura.getMotivoFatura().getIdMotivoFatura() > 0;
 
-        boolean fornecedorValido = fatura.getIdFornecedor() != null && fatura.getIdFornecedor() > 0;
+        boolean fornecedorValido = fatura.getFornecedor() != null &&
+                fatura.getFornecedor().getIdFornecedor() != null &&
+                fatura.getFornecedor().getIdFornecedor() > 0;
 
         return numeroValido && datasValidas && valorValido && motivoValido && fornecedorValido;
     }

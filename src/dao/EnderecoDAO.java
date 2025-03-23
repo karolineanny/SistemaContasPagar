@@ -1,5 +1,9 @@
 package dao;
 
+import model.Endereco;
+import model.Cidade;
+import model.Logradouro;
+import model.Bairro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Endereco;
 
 public class EnderecoDAO {
 
@@ -15,9 +18,9 @@ public class EnderecoDAO {
         String sql = "INSERT INTO endereco (cep, idCidade, idLogradouro, idBairro) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, endereco.getCep());
-            preparedStatement.setInt(2, endereco.getIdCidade());
-            preparedStatement.setInt(3, endereco.getIdLogradouro());
-            preparedStatement.setInt(4, endereco.getIdBairro());
+            preparedStatement.setInt(2, endereco.getCidade().getIdCidade());
+            preparedStatement.setInt(3, endereco.getLogradouro().getIdLogradouro());
+            preparedStatement.setInt(4, endereco.getBairro().getIdBairro());
 
             preparedStatement.executeUpdate();
             try (ResultSet rs = preparedStatement.getGeneratedKeys()) {
@@ -43,9 +46,19 @@ public class EnderecoDAO {
                     Endereco endereco = new Endereco();
                     endereco.setIdEndereco(rs.getInt("idEndereco"));
                     endereco.setCep(rs.getString("cep"));
-                    endereco.setIdCidade(rs.getInt("idCidade"));
-                    endereco.setIdLogradouro(rs.getInt("idLogradouro"));
-                    endereco.setIdBairro(rs.getInt("idBairro"));
+
+                    Cidade cidade = new Cidade();
+                    cidade.setIdCidade(rs.getInt("idCidade"));
+                    endereco.setCidade(cidade);
+
+                    Logradouro logradouro = new Logradouro();
+                    logradouro.setIdLogradouro(rs.getInt("idLogradouro"));
+                    endereco.setLogradouro(logradouro);
+
+                    Bairro bairro = new Bairro();
+                    bairro.setIdBairro(rs.getInt("idBairro"));
+                    endereco.setBairro(bairro);
+
                     enderecos.add(endereco);
                 }
             }
@@ -62,9 +75,19 @@ public class EnderecoDAO {
                     Endereco endereco = new Endereco();
                     endereco.setIdEndereco(rs.getInt("idEndereco"));
                     endereco.setCep(rs.getString("cep"));
-                    endereco.setIdCidade(rs.getInt("idCidade"));
-                    endereco.setIdLogradouro(rs.getInt("idLogradouro"));
-                    endereco.setIdBairro(rs.getInt("idBairro"));
+
+                    Cidade cidade = new Cidade();
+                    cidade.setIdCidade(rs.getInt("idCidade"));
+                    endereco.setCidade(cidade);
+
+                    Logradouro logradouro = new Logradouro();
+                    logradouro.setIdLogradouro(rs.getInt("idLogradouro"));
+                    endereco.setLogradouro(logradouro);
+
+                    Bairro bairro = new Bairro();
+                    bairro.setIdBairro(rs.getInt("idBairro"));
+                    endereco.setBairro(bairro);
+
                     return endereco;
                 }
             }
@@ -83,9 +106,19 @@ public class EnderecoDAO {
                 Endereco endereco = new Endereco();
                 endereco.setIdEndereco(rs.getInt("idEndereco"));
                 endereco.setCep(rs.getString("cep"));
-                endereco.setIdCidade(rs.getInt("idCidade"));
-                endereco.setIdLogradouro(rs.getInt("idLogradouro"));
-                endereco.setIdBairro(rs.getInt("idBairro"));
+
+                Cidade cidade = new Cidade();
+                cidade.setIdCidade(rs.getInt("idCidade"));
+                endereco.setCidade(cidade);
+
+                Logradouro logradouro = new Logradouro();
+                logradouro.setIdLogradouro(rs.getInt("idLogradouro"));
+                endereco.setLogradouro(logradouro);
+
+                Bairro bairro = new Bairro();
+                bairro.setIdBairro(rs.getInt("idBairro"));
+                endereco.setBairro(bairro);
+
                 enderecos.add(endereco);
             }
         }

@@ -3,62 +3,43 @@ package model;
 public class TelefoneFornecedor {
 
     private String numeroTelefone;
-
-    private String numeroDDD;
-
-    private String numeroDDI;
-
-    private Integer idFornecedor;
+    private DDD ddd;
+    private DDI ddi;
+    private Fornecedor fornecedor;
 
     public TelefoneFornecedor() {
     }
 
-    public TelefoneFornecedor(String numeroTelefone, String numeroDDD, String numeroDDI, Integer idFornecedor) {
+    public TelefoneFornecedor(String numeroTelefone, DDD ddd, DDI ddi, Fornecedor fornecedor) {
         this.numeroTelefone = numeroTelefone;
-        this.numeroDDD = numeroDDD;
-        this.numeroDDI = numeroDDI;
-        this.idFornecedor = idFornecedor;
+        this.ddd = ddd;
+        this.ddi = ddi;
+        this.fornecedor = fornecedor;
     }
 
-    public String getNumeroTelefone() {
-        return numeroTelefone;
-    }
+    public String getNumeroTelefone() { return numeroTelefone; }
 
-    public void setNumeroTelefone(String numeroTelefone) {
-        this.numeroTelefone = numeroTelefone;
-    }
+    public void setNumeroTelefone(String numeroTelefone) { this.numeroTelefone = numeroTelefone; }
 
-    public String getNumeroDDD() {
-        return numeroDDD;
-    }
+    public DDD getDdd() { return ddd; }
 
-    public void setNumeroDDD(String numeroDDD) {
-        this.numeroDDD = numeroDDD;
-    }
+    public void setDdd(DDD ddd) { this.ddd = ddd; }
 
-    public String getNumeroDDI() {
-        return numeroDDI;
-    }
+    public DDI getDdi() { return ddi; }
 
-    public void setNumeroDDI(String numeroDDI) {
-        this.numeroDDI = numeroDDI;
-    }
+    public void setDdi(DDI ddi) { this.ddi = ddi; }
 
-    public Integer getIdFornecedor() {
-        return idFornecedor;
-    }
+    public Fornecedor getFornecedor() { return fornecedor; }
 
-    public void setIdFornecedor(Integer idFornecedor) {
-        this.idFornecedor = idFornecedor;
-    }
+    public void setFornecedor(Fornecedor fornecedor) { this.fornecedor = fornecedor; }
 
     @Override
     public String toString() {
         return "TelefoneFornecedor{" +
                 "numeroTelefone='" + numeroTelefone + '\'' +
-                ", numeroDDD='" + numeroDDD + '\'' +
-                ", numeroDDI='" + numeroDDI + '\'' +
-                ", idFornecedor=" + idFornecedor +
+                ", ddd=" + ddd +
+                ", ddi=" + ddi +
+                ", fornecedor=" + fornecedor +
                 '}';
     }
 }

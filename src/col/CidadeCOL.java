@@ -13,6 +13,8 @@ public class CidadeCOL {
                 idValido(cidade.getIdCidade()) &&
                 cidade.getNome() != null &&
                 !cidade.getNome().trim().isEmpty() &&
-                cidade.getSiglaUF() != null;
+                cidade.getUnidadeFederativa() != null &&
+                cidade.getUnidadeFederativa().getSiglaUF() != null &&
+                !cidade.getUnidadeFederativa().getSiglaUF().trim().isEmpty();
     }
 }

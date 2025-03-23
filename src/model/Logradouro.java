@@ -3,49 +3,35 @@ package model;
 public class Logradouro {
 
     private Integer idLogradouro;
-
     private String nome;
-
-    private String siglaTipoLogradouro;
+    private TipoLogradouro tipoLogradouro;
 
     public Logradouro() {
     }
 
-    public Logradouro(String nome, String siglaTipoLogradouro) {
+    public Logradouro(String nome, TipoLogradouro tipoLogradouro) {
         this.nome = nome;
-        this.siglaTipoLogradouro = siglaTipoLogradouro;
+        this.tipoLogradouro = tipoLogradouro;
     }
 
-    public Integer getIdLogradouro() {
-        return idLogradouro;
-    }
+    public Integer getIdLogradouro() { return idLogradouro; }
 
-    public void setIdLogradouro(Integer idLogradouro) {
-        this.idLogradouro = idLogradouro;
-    }
+    public void setIdLogradouro(Integer idLogradouro) { this.idLogradouro = idLogradouro; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getSiglaTipoLogradouro() {
-        return siglaTipoLogradouro;
-    }
+    public TipoLogradouro getTipoLogradouro() { return tipoLogradouro; }
 
-    public void setSiglaTipoLogradouro(String siglaTipoLogradouro) {
-        this.siglaTipoLogradouro = siglaTipoLogradouro;
-    }
+    public void setTipoLogradouro(TipoLogradouro tipoLogradouro) { this.tipoLogradouro = tipoLogradouro; }
 
     @Override
     public String toString() {
         return "Logradouro{" +
                 "idLogradouro=" + idLogradouro +
                 ", nome='" + nome + '\'' +
-                ", siglaTipoLogradouro='" + siglaTipoLogradouro + '\'' +
+                ", tipoLogradouro=" + tipoLogradouro +
                 '}';
     }
 }

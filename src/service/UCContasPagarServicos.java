@@ -3,13 +3,18 @@ package service;
 import col.FaturaCOL;
 import col.FornecedorCOL;
 import col.MotivoFaturaCOL;
+import dao.EmailDAO;
 import dao.FaturaDAO;
 import dao.FornecedorDAO;
 import dao.MotivoFaturaDAO;
+import dao.TelefoneDAO;
 import apoio.ConexaoBD;
+import model.EmailFornecedor;
 import model.Fatura;
 import model.Fornecedor;
 import model.MotivoFatura;
+import model.ResumoDespesa;
+import model.TelefoneFornecedor;
 
 import java.sql.Connection;
 import java.math.BigDecimal;
@@ -25,6 +30,8 @@ public class UCContasPagarServicos {
     private FaturaDAO faturaDAO;
     private FornecedorDAO fornecedorDAO;
     private MotivoFaturaDAO motivoFaturaDAO;
+    private EmailDAO emailDAO;
+    private TelefoneDAO telefoneDAO;
 
     public UCContasPagarServicos() {
         this.faturaCOL = new FaturaCOL();
@@ -34,6 +41,8 @@ public class UCContasPagarServicos {
         this.faturaDAO = new FaturaDAO();
         this.fornecedorDAO = new FornecedorDAO();
         this.motivoFaturaDAO = new MotivoFaturaDAO();
+        this.emailDAO = new EmailDAO();
+        this.telefoneDAO = new TelefoneDAO();
     }
 
     public Fatura cadastrarFatura(Fatura fatura) throws Exception {
@@ -43,23 +52,23 @@ public class UCContasPagarServicos {
 
         try (Connection conn = new ConexaoBD().getConexaoComBD()) {
             conn.setAutoCommit(false);
-
             try {
-                Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(fatura.getIdFornecedor(), conn);
+                Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(fatura.getFornecedor().getIdFornecedor(), conn);
                 if (fornecedor == null) {
-                    throw new Exception("Fornecedor inexistente com id " + fatura.getIdFornecedor());
+                    throw new Exception("Fornecedor inexistente com id " + fatura.getFornecedor().getIdFornecedor());
                 }
 
-                MotivoFatura motivo = motivoFaturaDAO.selecionarMotivoFaturaPorId(fatura.getIdMotivoFatura(), conn);
+                MotivoFatura motivo = motivoFaturaDAO.selecionarMotivoFaturaPorId(fatura.getMotivoFatura().getIdMotivoFatura(), conn);
                 if (motivo == null) {
-                    throw new Exception("Motivo de Fatura inexistente com id " + fatura.getIdMotivoFatura());
+                    throw new Exception("Motivo de Fatura inexistente com id " + fatura.getMotivoFatura().getIdMotivoFatura());
                 }
+
+                fatura.setFornecedor(fornecedor);
+                fatura.setMotivoFatura(motivo);
 
                 Fatura faturaCriada = faturaDAO.inserirFatura(fatura, conn);
-
                 conn.commit();
                 return faturaCriada;
-
             } catch (Exception e) {
                 conn.rollback();
                 throw new Exception("Erro ao cadastrar fatura: " + e.getMessage(), e);
@@ -71,7 +80,6 @@ public class UCContasPagarServicos {
         if (numeroFatura == null || numeroFatura <= 0) {
             throw new Exception("Número da fatura inválido!");
         }
-
         try (Connection conn = new ConexaoBD().getConexaoComBD()) {
             conn.setAutoCommit(false);
             try {
@@ -110,8 +118,7 @@ public class UCContasPagarServicos {
                 if (fornecedor == null) {
                     throw new Exception("Fornecedor inexistente com ID: " + idFornecedor);
                 }
-
-                List<Fatura> faturas = faturaDAO.selecionarFaturasPorFornecedor(idFornecedor, conn);
+                List<Fatura> faturas = faturaDAO.selecionarFaturasPorFornecedor(fornecedor, conn);
                 conn.commit();
                 return faturas;
             } catch (Exception e) {
@@ -125,7 +132,6 @@ public class UCContasPagarServicos {
         if (idFornecedor == null || idFornecedor <= 0) {
             throw new Exception("ID de Fornecedor inválido!");
         }
-
         try (Connection conn = new ConexaoBD().getConexaoComBD()) {
             conn.setAutoCommit(false);
             try {
@@ -143,7 +149,6 @@ public class UCContasPagarServicos {
         if (idMotivo == null || idMotivo <= 0) {
             throw new Exception("ID de MotivoFatura inválido!");
         }
-
         try (Connection conn = new ConexaoBD().getConexaoComBD()) {
             conn.setAutoCommit(false);
             try {
@@ -157,6 +162,64 @@ public class UCContasPagarServicos {
         }
     }
 
+    public List<EmailFornecedor> consultarEmailsFornecedor(Integer idFornecedor) throws Exception {
+        if (idFornecedor == null || idFornecedor <= 0) {
+            throw new Exception("ID de Fornecedor inválido para emails!");
+        }
+        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+            conn.setAutoCommit(false);
+            try {
+                Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(idFornecedor, conn);
+                if (fornecedor == null) {
+                    throw new Exception("Fornecedor inexistente com ID " + idFornecedor);
+                }
+                List<EmailFornecedor> emails = emailDAO.selectTodosEmailPorFornecedor(fornecedor, conn);
+                conn.commit();
+                return emails;
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro ao consultar emails para o fornecedor ID: " + idFornecedor, e);
+            }
+        }
+    }
+
+    public List<TelefoneFornecedor> consultarTelefonesFornecedor(Integer idFornecedor) throws Exception {
+        if (idFornecedor == null || idFornecedor <= 0) {
+            throw new Exception("ID de Fornecedor inválido para telefones!");
+        }
+        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+            conn.setAutoCommit(false);
+            try {
+                Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(idFornecedor, conn);
+                if (fornecedor == null) {
+                    throw new Exception("Fornecedor inexistente com ID " + idFornecedor);
+                }
+                List<TelefoneFornecedor> tels = telefoneDAO.selecionarTelefonesFornecedor(fornecedor, conn);
+                conn.commit();
+                return tels;
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro ao consultar telefones para o fornecedor ID: " + idFornecedor, e);
+            }
+        }
+    }
+
+    public List<ResumoDespesa> consultarTotaisPorTipoDespesa(LocalDate dataInicio, LocalDate dataFim) throws Exception {
+        if (dataInicio == null || dataFim == null || dataFim.isBefore(dataInicio)) {
+            throw new Exception("Período inválido!");
+        }
+        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+            conn.setAutoCommit(false);
+            try {
+                List<ResumoDespesa> lista = faturaDAO.listarTotaisPorMotivoFatura(dataInicio, dataFim, conn);
+                conn.commit();
+                return lista;
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro ao consultar totais por tipo de despesa no período.", e);
+            }
+        }
+    }
 
     public static void main(String[] args) {
         UCContasPagarServicos service = new UCContasPagarServicos();
@@ -165,8 +228,15 @@ public class UCContasPagarServicos {
             novaFatura.setNumeroFatura(null);
             novaFatura.setDataLancamento(LocalDate.now());
             novaFatura.setDataVencimento(LocalDate.now().plusDays(10));
-            novaFatura.setIdFornecedor(1);
-            novaFatura.setIdMotivoFatura(1);
+
+            Fornecedor fornecedor = new Fornecedor();
+            fornecedor.setIdFornecedor(1);
+            novaFatura.setFornecedor(fornecedor);
+
+            MotivoFatura motivo = new MotivoFatura();
+            motivo.setIdMotivoFatura(1);
+            novaFatura.setMotivoFatura(motivo);
+
             novaFatura.setValorTotal(new BigDecimal("1500.00"));
             novaFatura.setSaldo(new BigDecimal("1500.00"));
 

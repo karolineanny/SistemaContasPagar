@@ -2,73 +2,49 @@ package model;
 
 public class Endereco {
     private Integer idEndereco;
-
     private String cep;
-
-    private Integer idCidade;
-
-    private Integer idLogradouro;
-
-    private Integer idBairro;
+    private Cidade cidade;
+    private Logradouro logradouro;
+    private Bairro bairro;
 
     public Endereco() {
     }
 
-    public Endereco(String cep, Integer idCidade, Integer idLogradouro, Integer idBairro) {
+    public Endereco(String cep, Cidade cidade, Logradouro logradouro, Bairro bairro) {
         this.cep = cep;
-        this.idCidade = idCidade;
-        this.idLogradouro = idLogradouro;
-        this.idBairro = idBairro;
+        this.cidade = cidade;
+        this.logradouro = logradouro;
+        this.bairro = bairro;
     }
 
-    public Integer getIdEndereco() {
-        return idEndereco;
-    }
+    public Integer getIdEndereco() { return idEndereco; }
 
-    public void setIdEndereco(Integer idEndereco) {
-        this.idEndereco = idEndereco;
-    }
+    public void setIdEndereco(Integer idEndereco) { this.idEndereco = idEndereco; }
 
-    public String getCep() {
-        return cep;
-    }
+    public String getCep() { return cep; }
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+    public void setCep(String cep) { this.cep = cep; }
 
-    public Integer getIdCidade() {
-        return idCidade;
-    }
+    public Cidade getCidade() { return cidade; }
 
-    public void setIdCidade(Integer idCidade) {
-        this.idCidade = idCidade;
-    }
+    public void setCidade(Cidade cidade) { this.cidade = cidade; }
 
-    public Integer getIdLogradouro() {
-        return idLogradouro;
-    }
+    public Logradouro getLogradouro() { return logradouro; }
 
-    public void setIdLogradouro(Integer idLogradouro) {
-        this.idLogradouro = idLogradouro;
-    }
+    public void setLogradouro(Logradouro logradouro) { this.logradouro = logradouro; }
 
-    public Integer getIdBairro() {
-        return idBairro;
-    }
+    public Bairro getBairro() { return bairro; }
 
-    public void setIdBairro(Integer idBairro) {
-        this.idBairro = idBairro;
-    }
+    public void setBairro(Bairro bairro) { this.bairro = bairro; }
 
     @Override
     public String toString() {
         return "Endereco{" +
                 "idEndereco=" + idEndereco +
                 ", cep='" + cep + '\'' +
-                ", idCidade=" + idCidade +
-                ", idLogradouro=" + idLogradouro +
-                ", idBairro=" + idBairro +
+                ", cidade=" + cidade +
+                ", logradouro=" + logradouro +
+                ", bairro=" + bairro +
                 '}';
     }
 }

@@ -22,6 +22,9 @@ public class EmailCOL {
         return email != null &&
                 email.getEmailFornecedor() != null &&
                 !email.getEmailFornecedor().trim().isEmpty() &&
-                EMAIL_PATTERN.matcher(email.getEmailFornecedor()).matches();
+                EMAIL_PATTERN.matcher(email.getEmailFornecedor()).matches() &&
+                email.getFornecedor() != null &&
+                email.getFornecedor().getIdFornecedor() != null &&
+                email.getFornecedor().getIdFornecedor() > 0;
     }
 }

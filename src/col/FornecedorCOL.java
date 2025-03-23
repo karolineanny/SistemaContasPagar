@@ -1,6 +1,7 @@
 package col;
 
 import model.Fornecedor;
+import model.Endereco;
 
 public class FornecedorCOL {
 
@@ -12,6 +13,10 @@ public class FornecedorCOL {
         return fornecedor != null &&
                 fornecedor.getNomeFornecedor() != null && !fornecedor.getNomeFornecedor().trim().isEmpty() &&
                 fornecedor.getCnpjFornecedor() != null && !fornecedor.getCnpjFornecedor().trim().isEmpty() &&
-                fornecedor.getIdEndereco() != null;
+                fornecedor.getEndereco() != null && enderecoValido(fornecedor.getEndereco());
+    }
+
+    public static boolean enderecoValido(Endereco endereco) {
+        return endereco.getIdEndereco() != null && endereco.getIdEndereco() > 0;
     }
 }

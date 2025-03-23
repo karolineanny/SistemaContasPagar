@@ -10,26 +10,22 @@ import java.util.List;
 
 public class EmailDAO {
 
-    public static List<EmailFornecedor> selectTodosEmailPorIdFornecedor(Integer idFornecedor, Connection conexao) throws Exception {
+    public static List<EmailFornecedor> selectTodosEmailPorFornecedor(Fornecedor fornecedor, Connection conexao) throws Exception {
         List<EmailFornecedor> emails = new ArrayList<>();
         String sql = "SELECT emailFornecedor, idFornecedor FROM emailfornecedor WHERE idFornecedor = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, idFornecedor);
+            stmt.setInt(1, fornecedor.getIdFornecedor());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     EmailFornecedor emailFornecedor = new EmailFornecedor();
                     emailFornecedor.setEmailFornecedor(rs.getString("emailFornecedor"));
-
-                    Fornecedor fornecedor = new Fornecedor();
-                    fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
                     emailFornecedor.setFornecedor(fornecedor);
-
                     emails.add(emailFornecedor);
                 }
             }
         } catch (Exception e) {
-            throw new Exception("Erro ao buscar emails do fornecedor pelo ID: " + idFornecedor, e);
+            throw new Exception("Erro ao buscar emails do fornecedor com ID: " + fornecedor.getIdFornecedor(), e);
         }
 
         return emails;
@@ -57,11 +53,9 @@ public class EmailDAO {
                 if (rs.next()) {
                     EmailFornecedor emailFornecedor = new EmailFornecedor();
                     emailFornecedor.setEmailFornecedor(rs.getString("emailFornecedor"));
-
                     Fornecedor fornecedor = new Fornecedor();
                     fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
                     emailFornecedor.setFornecedor(fornecedor);
-
                     return emailFornecedor;
                 }
             }

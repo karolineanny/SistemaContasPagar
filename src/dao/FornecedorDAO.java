@@ -5,20 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Fornecedor;
+import model.Endereco;
 
 public class FornecedorDAO {
 
     public Fornecedor inserirFornecedor(Fornecedor fornecedor, Connection conexao) throws SQLException {
-        String sql = "INSERT INTO fornecedor (cnpjFornecedor, nomeFornecedor, idEndereco, complementoEndereco, numeroEndereco, saldoPagar) " +
-                "VALUES (?, ?, ?, ?, ?, ?) RETURNING idFornecedor";
-
+        String sql = "INSERT INTO fornecedor (cnpjFornecedor, nomeFornecedor, idEndereco, saldoPagar) " +
+                "VALUES (?, ?, ?, ?) RETURNING idFornecedor";
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, fornecedor.getCnpjFornecedor());
             preparedStatement.setString(2, fornecedor.getNomeFornecedor());
-            preparedStatement.setInt(3, fornecedor.getIdEndereco());
-            preparedStatement.setString(4, fornecedor.getComplementoEndereco());
-            preparedStatement.setString(5, fornecedor.getNumeroEndereco());
-            preparedStatement.setBigDecimal(6, fornecedor.getSaldoPagar());
+            preparedStatement.setInt(3, fornecedor.getEndereco().getIdEndereco());
+            preparedStatement.setBigDecimal(4, fornecedor.getSaldoPagar());
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -34,9 +32,8 @@ public class FornecedorDAO {
     }
 
     public Fornecedor selecionarFornecedorPorId(Integer id, Connection conexao) throws SQLException {
-        String sql = "SELECT idFornecedor, cnpjFornecedor, nomeFornecedor, idEndereco, complementoEndereco, numeroEndereco, saldoPagar " +
+        String sql = "SELECT idFornecedor, cnpjFornecedor, nomeFornecedor, idEndereco, saldoPagar " +
                 "FROM fornecedor WHERE idFornecedor = ?";
-
         Fornecedor fornecedor = null;
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
@@ -47,9 +44,11 @@ public class FornecedorDAO {
                     fornecedor.setIdFornecedor(resultSet.getInt("idFornecedor"));
                     fornecedor.setCnpjFornecedor(resultSet.getString("cnpjFornecedor"));
                     fornecedor.setNomeFornecedor(resultSet.getString("nomeFornecedor"));
-                    fornecedor.setIdEndereco(resultSet.getInt("idEndereco"));
-                    fornecedor.setComplementoEndereco(resultSet.getString("complementoEndereco"));
-                    fornecedor.setNumeroEndereco(resultSet.getString("numeroEndereco"));
+
+                    Endereco endereco = new Endereco();
+                    endereco.setIdEndereco(resultSet.getInt("idEndereco"));
+                    fornecedor.setEndereco(endereco);
+
                     fornecedor.setSaldoPagar(resultSet.getBigDecimal("saldoPagar"));
                 }
             }
@@ -58,9 +57,8 @@ public class FornecedorDAO {
     }
 
     public Fornecedor selecionarFornecedorPorCNPJ(String cnpj, Connection conexao) throws SQLException {
-        String sql = "SELECT idFornecedor, cnpjFornecedor, nomeFornecedor, idEndereco, complementoEndereco, numeroEndereco, saldoPagar " +
+        String sql = "SELECT idFornecedor, cnpjFornecedor, nomeFornecedor, idEndereco, saldoPagar " +
                 "FROM fornecedor WHERE cnpjFornecedor = ?";
-
         Fornecedor fornecedor = null;
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, cnpj);
@@ -71,9 +69,11 @@ public class FornecedorDAO {
                     fornecedor.setIdFornecedor(resultSet.getInt("idFornecedor"));
                     fornecedor.setCnpjFornecedor(resultSet.getString("cnpjFornecedor"));
                     fornecedor.setNomeFornecedor(resultSet.getString("nomeFornecedor"));
-                    fornecedor.setIdEndereco(resultSet.getInt("idEndereco"));
-                    fornecedor.setComplementoEndereco(resultSet.getString("complementoEndereco"));
-                    fornecedor.setNumeroEndereco(resultSet.getString("numeroEndereco"));
+
+                    Endereco endereco = new Endereco();
+                    endereco.setIdEndereco(resultSet.getInt("idEndereco"));
+                    fornecedor.setEndereco(endereco);
+
                     fornecedor.setSaldoPagar(resultSet.getBigDecimal("saldoPagar"));
                 }
             }

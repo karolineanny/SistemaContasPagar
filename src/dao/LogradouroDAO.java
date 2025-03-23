@@ -1,6 +1,7 @@
 package dao;
 
 import model.Logradouro;
+import model.TipoLogradouro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,13 +20,16 @@ public class LogradouroDAO {
 
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
-
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Logradouro logradouro = new Logradouro();
                     logradouro.setIdLogradouro(resultSet.getInt("idLogradouro"));
                     logradouro.setNome(resultSet.getString("logradouroNome"));
-                    logradouro.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
+
+                    TipoLogradouro tipo = new TipoLogradouro();
+                    tipo.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
+                    logradouro.setTipoLogradouro(tipo);
+
                     return logradouro;
                 }
             }
@@ -48,8 +52,12 @@ public class LogradouroDAO {
             while (resultSet.next()) {
                 Logradouro logradouro = new Logradouro();
                 logradouro.setIdLogradouro(resultSet.getInt("idLogradouro"));
-                logradouro.setNome(resultSet.getString("logradouroNome"));
-                logradouro.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
+                logradouro.setNome(resultSet.getString("logradouro_nome"));
+
+                TipoLogradouro tipo = new TipoLogradouro();
+                tipo.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
+                logradouro.setTipoLogradouro(tipo);
+
                 logradouros.add(logradouro);
             }
         }

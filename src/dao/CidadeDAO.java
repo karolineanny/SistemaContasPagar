@@ -7,14 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cidade;
+import model.UnidadeFederativa;
 
 public class CidadeDAO {
 
     public Cidade selecionarCidadePorId(Long id, Connection conexao) throws SQLException {
         String sql = """
-            SELECT c.idCidade        AS cidade_id,
-                   c.nome             AS cidade_nome,
-                   c.siglaUf         AS uf_sigla
+            SELECT c.idCidade        AS cidadeId,
+                   c.nome             AS cidadeNome,
+                   c.siglaUf          AS ufSigla
             FROM cidade c
             WHERE c.idCidade = ?;
         """;
@@ -24,10 +25,13 @@ public class CidadeDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Cidade cidade = new Cidade();
-                    // A model Cidade tem idCidade como Integer
                     cidade.setIdCidade(rs.getInt("cidadeId"));
                     cidade.setNome(rs.getString("cidadeNome"));
-                    cidade.setSiglaUF(rs.getString("ufSigla"));
+
+                    UnidadeFederativa uf = new UnidadeFederativa();
+                    uf.setSiglaUF(rs.getString("ufSigla"));
+                    cidade.setUnidadeFederativa(uf);
+
                     return cidade;
                 }
             }
@@ -38,8 +42,8 @@ public class CidadeDAO {
     public List<Cidade> selecionarTodasCidades(Connection conexao) throws SQLException {
         String sql = """
             SELECT c.idCidade,
-                   c.nome       AS cidade_nome,
-                   c.siglaUf   AS uf_sigla
+                   c.nome       AS cidadeNome,
+                   c.siglaUf   AS ufSigla
             FROM cidade c
             ORDER BY c.nome;
         """;
@@ -53,11 +57,14 @@ public class CidadeDAO {
                 Cidade cidade = new Cidade();
                 cidade.setIdCidade(rs.getInt("idCidade"));
                 cidade.setNome(rs.getString("cidadeNome"));
-                cidade.setSiglaUF(rs.getString("ufSigla"));
+
+                UnidadeFederativa uf = new UnidadeFederativa();
+                uf.setSiglaUF(rs.getString("ufSigla"));
+                cidade.setUnidadeFederativa(uf);
+
                 cidades.add(cidade);
             }
         }
-
         return cidades;
     }
 }

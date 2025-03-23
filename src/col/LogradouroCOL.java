@@ -13,7 +13,8 @@ public class LogradouroCOL {
                 idValido(logradouro.getIdLogradouro()) &&
                 logradouro.getNome() != null &&
                 !logradouro.getNome().trim().isEmpty() &&
-                logradouro.getSiglaTipoLogradouro() != null &&
-                !logradouro.getSiglaTipoLogradouro().trim().isEmpty();
+                logradouro.getTipoLogradouro() != null &&
+                logradouro.getTipoLogradouro().getSiglaTipoLogradouro() != null &&
+                !logradouro.getTipoLogradouro().getSiglaTipoLogradouro().trim().isEmpty();
     }
 }

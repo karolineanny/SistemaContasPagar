@@ -1,32 +1,34 @@
 package col;
 
-import java.sql.Connection;
-import java.util.List;
 import model.TelefoneFornecedor;
 import model.DDD;
 import model.DDI;
+import model.Fornecedor;
 
 public class TelefoneCOL {
 
-    private static boolean numeroValido(String numero) {
-        return numero != null && !numero.trim().isEmpty() && numero.length() <= 15;
-    }
-
-    public static boolean telefonesValidos(List<TelefoneFornecedor> telefones, Connection conexao) throws Exception {
-        for (TelefoneFornecedor telefone : telefones) {
-            if (!telefoneValido(telefone, conexao)) {
-                return false;
-            }
+    public static boolean telefoneValido(TelefoneFornecedor telefone) {
+        if (telefone == null) {
+            return false;
         }
-        return true;
-    }
+        boolean numeroValido = telefone.getNumeroTelefone() != null && !telefone.getNumeroTelefone().trim().isEmpty();
 
-    private static boolean telefoneValido(TelefoneFornecedor telefone, Connection conexao) throws Exception {
-        return telefone != null &&
-                numeroValido(telefone.getNumeroTelefone()) &&
-                DDDCOL.dddValido(new DDD(telefone.getNumeroDDD())) &&
-                DDDCOL.dddExiste(new DDD(telefone.getNumeroDDD()), conexao) &&
-                DDICOL.ddiValido(new DDI(telefone.getNumeroDDI())) &&
-                DDICOL.ddiExiste(new DDI(telefone.getNumeroDDI()), conexao);
+        boolean dddValido = false;
+        DDD ddd = telefone.getDdd();
+        if (ddd != null && ddd.getNumeroDDD() != null) {
+            dddValido = !ddd.getNumeroDDD().trim().isEmpty();
+        }
+
+        boolean ddiValido = false;
+        DDI ddi = telefone.getDdi();
+        if (ddi != null && ddi.getNumeroDDI() != null) {
+            ddiValido = !ddi.getNumeroDDI().trim().isEmpty();
+        }
+
+        boolean fornecedorValido = telefone.getFornecedor() != null &&
+                telefone.getFornecedor().getIdFornecedor() != null &&
+                telefone.getFornecedor().getIdFornecedor() > 0;
+
+        return numeroValido && dddValido && ddiValido && fornecedorValido;
     }
 }

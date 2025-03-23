@@ -8,8 +8,8 @@ public class Fatura {
     private Integer numeroFatura;
     private LocalDate dataLancamento;
     private LocalDate dataVencimento;
-    private Integer idFornecedor;
-    private Integer idMotivoFatura;
+    private Fornecedor fornecedor;
+    private MotivoFatura motivoFatura;
     private BigDecimal valorTotal;
     private BigDecimal saldo;
 
@@ -17,12 +17,12 @@ public class Fatura {
     }
 
     public Fatura(Integer numeroFatura, LocalDate dataLancamento, LocalDate dataVencimento,
-                  Integer idFornecedor, Integer idMotivoFatura, BigDecimal valorTotal, BigDecimal saldo) {
+                  Fornecedor fornecedor, MotivoFatura motivoFatura, BigDecimal valorTotal, BigDecimal saldo) {
         this.numeroFatura = numeroFatura;
         this.dataLancamento = dataLancamento;
         this.dataVencimento = dataVencimento;
-        this.idFornecedor = idFornecedor;
-        this.idMotivoFatura = idMotivoFatura;
+        this.fornecedor = fornecedor;
+        this.motivoFatura = motivoFatura;
         this.valorTotal = valorTotal;
         this.saldo = saldo;
     }
@@ -39,13 +39,13 @@ public class Fatura {
 
     public void setDataVencimento(LocalDate dataVencimento) { this.dataVencimento = dataVencimento; }
 
-    public Integer getIdFornecedor() { return idFornecedor; }
+    public Fornecedor getFornecedor() { return fornecedor; }
 
-    public void setIdFornecedor(Integer idFornecedor) { this.idFornecedor = idFornecedor; }
+    public void setFornecedor(Fornecedor fornecedor) { this.fornecedor = fornecedor; }
 
-    public Integer getIdMotivoFatura() { return idMotivoFatura; }
+    public MotivoFatura getMotivoFatura() { return motivoFatura; }
 
-    public void setIdMotivoFatura(Integer idMotivoFatura) { this.idMotivoFatura = idMotivoFatura; }
+    public void setMotivoFatura(MotivoFatura motivoFatura) { this.motivoFatura = motivoFatura; }
 
     public BigDecimal getValorTotal() { return valorTotal; }
 
@@ -61,8 +61,8 @@ public class Fatura {
                 "numeroFatura=" + numeroFatura +
                 ", dataLancamento=" + dataLancamento +
                 ", dataVencimento=" + dataVencimento +
-                ", idFornecedor=" + idFornecedor +
-                ", idMotivoFatura=" + idMotivoFatura +
+                ", fornecedor=" + fornecedor +
+                ", motivoFatura=" + motivoFatura +
                 ", valorTotal=" + valorTotal +
                 ", saldo=" + saldo +
                 '}';
