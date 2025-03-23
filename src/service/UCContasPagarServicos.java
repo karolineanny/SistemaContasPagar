@@ -275,4 +275,99 @@ public class UCContasPagarServicos {
         }
     }
 
+    public void simularTransacaoOk(LoginUsuarioBD loginUsuarioBD) throws Exception {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
+            conn.setAutoCommit(false);
+            try {
+                // INSERT em fatura
+                Fatura fatura = new Fatura();
+                fatura.setDataLancamento(LocalDate.now());
+                fatura.setDataVencimento(LocalDate.now().plusDays(30));
+                fatura.setValorTotal(new BigDecimal("1000.00"));
+                fatura.setSaldo(new BigDecimal("1000.00"));
+
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setIdFornecedor(1);
+                fatura.setFornecedor(fornecedor);
+
+                MotivoFatura motivo = new MotivoFatura();
+                motivo.setIdMotivoFatura(1);
+                fatura.setMotivoFatura(motivo);
+
+                faturaDAO.inserirFatura(fatura, conn);
+
+                // UPDATE em fornecedor
+                fornecedorDAO.atualizarNomeFornecedor(fornecedor.getIdFornecedor(), "Fornecedor Atualizado - OK", conn);
+
+                conn.commit();
+                System.out.println("Transação OK concluída com sucesso!");
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro na transação OK: " + e.getMessage(), e);
+            }
+        }
+    }
+
+    public void simularTransacaoIncompleta(LoginUsuarioBD loginUsuarioBD) throws Exception {
+        Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD);
+        conn.setAutoCommit(false);
+
+        // INSERT em fatura
+        Fatura fatura = new Fatura();
+        fatura.setDataLancamento(LocalDate.now());
+        fatura.setDataVencimento(LocalDate.now().plusDays(30));
+        fatura.setValorTotal(new BigDecimal("2000.00"));
+        fatura.setSaldo(new BigDecimal("2000.00"));
+
+        Fornecedor fornecedor = new Fornecedor();
+        fornecedor.setIdFornecedor(1);
+        fatura.setFornecedor(fornecedor);
+
+        MotivoFatura motivo = new MotivoFatura();
+        motivo.setIdMotivoFatura(1);
+        fatura.setMotivoFatura(motivo);
+
+        faturaDAO.inserirFatura(fatura, conn);
+
+        // UPDATE em fornecedor
+        fornecedorDAO.atualizarNomeFornecedor(fornecedor.getIdFornecedor(), "Fornecedor - INCOMPLETA", conn);
+
+        System.out.println("Transação incompleta simulada: encerrando sem commit/rollback.");
+        // Simula encerramento abrupto
+        System.exit(1);
+    }
+
+    public void simularTransacaoRollback(LoginUsuarioBD loginUsuarioBD) throws Exception {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
+            conn.setAutoCommit(false);
+            try {
+                Fatura fatura = new Fatura();
+                fatura.setDataLancamento(LocalDate.now());
+                fatura.setDataVencimento(LocalDate.now().plusDays(15));
+                fatura.setValorTotal(new BigDecimal("3000.00"));
+                fatura.setSaldo(new BigDecimal("3000.00"));
+
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setIdFornecedor(1);
+                fatura.setFornecedor(fornecedor);
+
+                MotivoFatura motivo = new MotivoFatura();
+                motivo.setIdMotivoFatura(1);
+                fatura.setMotivoFatura(motivo);
+
+                faturaDAO.inserirFatura(fatura, conn);
+
+                fornecedorDAO.atualizarNomeFornecedor(fornecedor.getIdFornecedor(), "Fornecedor - ROLLBACK", conn);
+
+                // Simula falha lógica
+                throw new Exception("Erro simulado: abortando a transação com rollback.");
+            } catch (Exception e) {
+                conn.rollback();
+                System.out.println("Rollback executado com sucesso.");
+            }
+        }
+    }
+
+
+
 }

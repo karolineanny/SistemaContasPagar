@@ -93,4 +93,19 @@ public class FornecedorDAO {
             ps.executeUpdate();
         }
     }
+
+    public void atualizarNomeFornecedor(int idFornecedor, String novoNome, Connection conexao) throws SQLException {
+        String sql = "UPDATE fornecedor SET nome_fornecedor = ? WHERE id_fornecedor = ?";
+
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, novoNome);
+            stmt.setInt(2, idFornecedor);
+
+            int linhasAfetadas = stmt.executeUpdate();
+            if (linhasAfetadas == 0) {
+                throw new SQLException("Nenhum fornecedor encontrado com o ID " + idFornecedor);
+            }
+        }
+    }
+
 }

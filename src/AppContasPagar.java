@@ -25,6 +25,9 @@ public class AppContasPagar {
             System.out.println("4. Consultar fornecedor com tipo complexo telefone completo");
             System.out.println("5. Adicionar telefone completo ao fornecedor");
             System.out.println("6. Remover fatura");
+            System.out.println("7. Simular transação OK");
+            System.out.println("8. Simular transação incompleta");
+            System.out.println("9. Simular transação com Rollback");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             int opc = scanner.nextInt();
@@ -49,6 +52,15 @@ public class AppContasPagar {
                         break;
                     case 6:
                         appContasPagar.telaRemoverFatura(service, scanner, loginUsuarioBD);
+                        break;
+                    case 7:
+                        service.simularTransacaoOk(loginUsuarioBD);
+                        break;
+                    case 8:
+                        service.simularTransacaoIncompleta(loginUsuarioBD);
+                        break;
+                    case 9:
+                        service.simularTransacaoRollback(loginUsuarioBD);
                         break;
                     case 0:
                         sair = true;
