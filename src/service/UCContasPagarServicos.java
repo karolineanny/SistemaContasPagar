@@ -1,5 +1,6 @@
 package service;
 
+import apoio.LoginUsuarioBD;
 import col.FaturaCOL;
 import col.FornecedorCOL;
 import col.MotivoFaturaCOL;
@@ -45,12 +46,12 @@ public class UCContasPagarServicos {
         this.telefoneDAO = new TelefoneDAO();
     }
 
-    public Fatura cadastrarFatura(Fatura fatura) throws Exception {
+    public Fatura cadastrarFatura(Fatura fatura, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (!FaturaCOL.faturaValida(fatura)) {
             throw new Exception("Fatura inválida!");
         }
 
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(fatura.getFornecedor().getIdFornecedor(), conn);
@@ -76,11 +77,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public Fatura consultarFaturaPorNumero(Integer numeroFatura) throws Exception {
+    public Fatura consultarFaturaPorNumero(Integer numeroFatura, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (numeroFatura == null || numeroFatura <= 0) {
             throw new Exception("Número da fatura inválido!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 Fatura fatura = faturaDAO.selecionarFaturaPorNumero(numeroFatura, conn);
@@ -93,8 +94,8 @@ public class UCContasPagarServicos {
         }
     }
 
-    public List<Fatura> obterListaDeFaturas() throws Exception {
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+    public List<Fatura> obterListaDeFaturas(LoginUsuarioBD loginUsuarioBD) throws Exception {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 List<Fatura> lista = faturaDAO.selecionarTodasFaturas(conn);
@@ -107,11 +108,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public List<Fatura> consultarFaturasPorFornecedor(Integer idFornecedor) throws Exception {
+    public List<Fatura> consultarFaturasPorFornecedor(Integer idFornecedor, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (idFornecedor == null || idFornecedor <= 0) {
             throw new Exception("ID de Fornecedor inválido!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(idFornecedor, conn);
@@ -128,11 +129,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public Fornecedor consultarFornecedorPorId(Integer idFornecedor) throws Exception {
+    public Fornecedor consultarFornecedorPorId(Integer idFornecedor, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (idFornecedor == null || idFornecedor <= 0) {
             throw new Exception("ID de Fornecedor inválido!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(idFornecedor, conn);
@@ -145,11 +146,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public MotivoFatura consultarMotivoFaturaPorId(Integer idMotivo) throws Exception {
+    public MotivoFatura consultarMotivoFaturaPorId(Integer idMotivo, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (idMotivo == null || idMotivo <= 0) {
             throw new Exception("ID de MotivoFatura inválido!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 MotivoFatura mf = motivoFaturaDAO.selecionarMotivoFaturaPorId(idMotivo, conn);
@@ -162,11 +163,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public List<EmailFornecedor> consultarEmailsFornecedor(Integer idFornecedor) throws Exception {
+    public List<EmailFornecedor> consultarEmailsFornecedor(Integer idFornecedor, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (idFornecedor == null || idFornecedor <= 0) {
             throw new Exception("ID de Fornecedor inválido para emails!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(idFornecedor, conn);
@@ -183,11 +184,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public List<TelefoneFornecedor> consultarTelefonesFornecedor(Integer idFornecedor) throws Exception {
+    public List<TelefoneFornecedor> consultarTelefonesFornecedor(Integer idFornecedor, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (idFornecedor == null || idFornecedor <= 0) {
             throw new Exception("ID de Fornecedor inválido para telefones!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 Fornecedor fornecedor = fornecedorDAO.selecionarFornecedorPorId(idFornecedor, conn);
@@ -204,11 +205,11 @@ public class UCContasPagarServicos {
         }
     }
 
-    public List<ResumoDespesa> consultarTotaisPorTipoDespesa(LocalDate dataInicio, LocalDate dataFim) throws Exception {
+    public List<ResumoDespesa> consultarTotaisPorTipoDespesa(LocalDate dataInicio, LocalDate dataFim, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (dataInicio == null || dataFim == null || dataFim.isBefore(dataInicio)) {
             throw new Exception("Período inválido!");
         }
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 List<ResumoDespesa> lista = faturaDAO.listarTotaisPorMotivoFatura(dataInicio, dataFim, conn);
@@ -221,52 +222,12 @@ public class UCContasPagarServicos {
         }
     }
 
-    public static void main(String[] args) {
-        UCContasPagarServicos service = new UCContasPagarServicos();
-        try {
-            Fatura novaFatura = new Fatura();
-            novaFatura.setNumeroFatura(null);
-            novaFatura.setDataLancamento(LocalDate.now());
-            novaFatura.setDataVencimento(LocalDate.now().plusDays(10));
-
-            Fornecedor fornecedor = new Fornecedor();
-            fornecedor.setIdFornecedor(1);
-            novaFatura.setFornecedor(fornecedor);
-
-            MotivoFatura motivo = new MotivoFatura();
-            motivo.setIdMotivoFatura(1);
-            novaFatura.setMotivoFatura(motivo);
-
-            novaFatura.setValorTotal(new BigDecimal("1500.00"));
-            novaFatura.setSaldo(new BigDecimal("1500.00"));
-
-            Fatura faturaCadastrada = service.cadastrarFatura(novaFatura);
-            if (faturaCadastrada != null) {
-                System.out.println("Fatura cadastrada! Nº gerado: " + faturaCadastrada.getNumeroFatura());
-            }
-
-            Fatura faturaBuscada = service.consultarFaturaPorNumero(faturaCadastrada.getNumeroFatura());
-            if (faturaBuscada != null) {
-                System.out.println("Fatura encontrada: " + faturaBuscada);
-            }
-
-            List<Fatura> todasFaturas = service.obterListaDeFaturas();
-            System.out.println("Lista de faturas: " + todasFaturas);
-
-            List<Fatura> faturasFornecedor = service.consultarFaturasPorFornecedor(1);
-            System.out.println("Faturas do fornecedor 1: " + faturasFornecedor);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<TelefoneFornecedor> consultarFornecedorComTipoTelefoneCompleto(Integer idFornecedor) throws Exception {
+    public List<TelefoneFornecedor> consultarFornecedorComTipoTelefoneCompleto(Integer idFornecedor, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (idFornecedor == null || idFornecedor <= 0) {
             throw new Exception("ID de Fornecedor inválido!");
         }
 
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 List<TelefoneFornecedor> telefoneFornecedorList = telefoneDAO.selecionarFornecedorPorIdComTelefoneCompleto(idFornecedor, conn);
@@ -279,12 +240,12 @@ public class UCContasPagarServicos {
         }
     }
 
-    public void adicionarTelefoneCompletoFornecedor(int idFornecedor, String numero, String ddd, String ddi) throws Exception {
+    public void adicionarTelefoneCompletoFornecedor(int idFornecedor, String numero, String ddd, String ddi, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (numero == null || numero.isBlank() || ddd == null || ddi == null) {
             throw new Exception("Dados do telefone inválidos.");
         }
 
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 fornecedorDAO.inserirTelefoneCompleto(idFornecedor, numero, ddd, ddi, conn);
@@ -296,12 +257,12 @@ public class UCContasPagarServicos {
         }
     }
 
-    public boolean removerFatura(int numeroFatura) throws Exception {
+    public boolean removerFatura(int numeroFatura, LoginUsuarioBD loginUsuarioBD) throws Exception {
         if (numeroFatura <= 0) {
             throw new Exception("Número de fatura inválido.");
         }
 
-        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+        try (Connection conn = new ConexaoBD().getConexaoComBD(loginUsuarioBD)) {
             conn.setAutoCommit(false);
             try {
                 boolean removido = faturaDAO.removerPorNumero(numeroFatura, conn);

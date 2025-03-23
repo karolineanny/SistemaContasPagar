@@ -8,16 +8,15 @@ public class ConexaoBD {
 
     // Outros usuários
     // usuario_admin, usuario_leitor, usuario_insercao
+    private LoginUsuarioBD loginUsuarioBD;
 
     private static final String URL = "jdbc:postgresql://localhost:5432/bd_contas";
-    private static final String USER = "usuario_insercao";
-    private static final String PASSWORD = "insercao";
 
-    public Connection getConexaoComBD() throws SQLException {
+    public Connection getConexaoComBD(LoginUsuarioBD loginUsuarioBD) throws SQLException {
         try {
             Class.forName("org.postgresql.Driver");
 
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+            return DriverManager.getConnection(URL, loginUsuarioBD.getNomeUsuario(), loginUsuarioBD.getSenha());
 
         } catch (ClassNotFoundException e) {
             throw new SQLException("Driver do Postgresql não encontrado.", e);

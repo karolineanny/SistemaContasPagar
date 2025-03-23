@@ -1,3 +1,4 @@
+import apoio.LoginUsuarioBD;
 import model.*;
 import service.UCContasPagarServicos;
 
@@ -12,6 +13,8 @@ public class AppContasPagar {
         AppContasPagar appContasPagar = new AppContasPagar();
         UCContasPagarServicos service = new UCContasPagarServicos();
         Scanner scanner = new Scanner(System.in);
+
+        LoginUsuarioBD loginUsuarioBD = appContasPagar.telaObterCredenciaisUsuarioBD(scanner);
 
         boolean sair = false;
         while (!sair) {
@@ -30,22 +33,22 @@ public class AppContasPagar {
             try {
                 switch (opc) {
                     case 1:
-                        appContasPagar.telaConsultarFaturasFornecedor(service, scanner);
+                        appContasPagar.telaConsultarFaturasFornecedor(service, scanner, loginUsuarioBD);
                         break;
                     case 2:
-                        appContasPagar.telaLancarFatura(service, scanner);
+                        appContasPagar.telaLancarFatura(service, scanner, loginUsuarioBD);
                         break;
                     case 3:
-                        appContasPagar.telaConsultarTotaisPorDespesa(service, scanner);
+                        appContasPagar.telaConsultarTotaisPorDespesa(service, scanner, loginUsuarioBD);
                         break;
                     case 4:
-                        appContasPagar.telaConsultarFornecedorComTipoTelefoneCompleto(service, scanner);
+                        appContasPagar.telaConsultarFornecedorComTipoTelefoneCompleto(service, scanner, loginUsuarioBD);
                         break;
                     case 5:
-                        appContasPagar.telaAdicionarTelefoneCompletoFornecedor(service, scanner);
+                        appContasPagar.telaAdicionarTelefoneCompletoFornecedor(service, scanner, loginUsuarioBD);
                         break;
                     case 6:
-                        appContasPagar.telaRemoverFatura(service, scanner);
+                        appContasPagar.telaRemoverFatura(service, scanner, loginUsuarioBD);
                         break;
                     case 0:
                         sair = true;
@@ -61,20 +64,35 @@ public class AppContasPagar {
         scanner.close();
     }
 
-    private void telaConsultarFaturasFornecedor(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private LoginUsuarioBD telaObterCredenciaisUsuarioBD(Scanner scanner) {
+        System.out.println("------------ LOGIN -------------: ");
+        System.out.print("Digite seu usuário: ");
+        String nomeUsuario = scanner.nextLine();
+
+        System.out.print("Digite sua senha: ");
+        String senha = scanner.nextLine();
+
+        LoginUsuarioBD loginUsuarioBD = new LoginUsuarioBD(nomeUsuario, senha);
+
+        System.out.println(loginUsuarioBD);
+
+        return loginUsuarioBD;
+    }
+
+    private void telaConsultarFaturasFornecedor(UCContasPagarServicos service, Scanner scanner, LoginUsuarioBD loginUsuarioBD) throws Exception {
         System.out.print("Digite o ID do Fornecedor: ");
         int idFornecedor = scanner.nextInt();
         scanner.nextLine();
 
-        Fornecedor fornecedor = service.consultarFornecedorPorId(idFornecedor);
+        Fornecedor fornecedor = service.consultarFornecedorPorId(idFornecedor, loginUsuarioBD);
         if (fornecedor == null) {
             System.out.println("Fornecedor inexistente para o ID informado.");
             return;
         }
 
-        List<Fatura> faturas = service.consultarFaturasPorFornecedor(idFornecedor);
-        List<EmailFornecedor> emails = service.consultarEmailsFornecedor(idFornecedor);
-        List<TelefoneFornecedor> telefones = service.consultarTelefonesFornecedor(idFornecedor);
+        List<Fatura> faturas = service.consultarFaturasPorFornecedor(idFornecedor, loginUsuarioBD);
+        List<EmailFornecedor> emails = service.consultarEmailsFornecedor(idFornecedor, loginUsuarioBD);
+        List<TelefoneFornecedor> telefones = service.consultarTelefonesFornecedor(idFornecedor, loginUsuarioBD);
 
         BigDecimal saldoTotal = BigDecimal.ZERO;
         for (Fatura f : faturas) {
@@ -115,7 +133,7 @@ public class AppContasPagar {
             System.out.println("\nNro. Fatura            | Motivo                   | Vencimento           | Valor           | Saldo        |");
             System.out.println("-----------------------------------------------------------------------------------------------------------");
             for (Fatura f : faturas) {
-                MotivoFatura motivo = service.consultarMotivoFaturaPorId(f.getMotivoFatura().getIdMotivoFatura());
+                MotivoFatura motivo = service.consultarMotivoFaturaPorId(f.getMotivoFatura().getIdMotivoFatura(), loginUsuarioBD);
                 String descMotivo = (motivo != null ? motivo.getDescricaoMotivo() : ("ID=" + f.getMotivoFatura().getIdMotivoFatura()));
                 System.out.printf("%-22d | %-24s | %-20s | R$ %-12.2f | R$ %-12.2f\n",
                         f.getNumeroFatura(),
@@ -128,7 +146,7 @@ public class AppContasPagar {
         }
     }
 
-    private void telaLancarFatura(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaLancarFatura(UCContasPagarServicos service, Scanner scanner, LoginUsuarioBD loginUsuarioBD) throws Exception {
         System.out.println("\n=== Lançar Nova Fatura ===");
 
         System.out.print("ID do Fornecedor: ");
@@ -173,7 +191,7 @@ public class AppContasPagar {
         fatura.setValorTotal(valorTotal);
         fatura.setSaldo(saldo);
 
-        Fatura faturaCriada = service.cadastrarFatura(fatura);
+        Fatura faturaCriada = service.cadastrarFatura(fatura, loginUsuarioBD);
         if (faturaCriada != null) {
             System.out.println("Fatura cadastrada com sucesso! Nº gerado: " + faturaCriada.getNumeroFatura());
             System.out.println("Saldo devedor: R$ " + faturaCriada.getSaldo());
@@ -182,7 +200,7 @@ public class AppContasPagar {
         }
     }
 
-    private void telaConsultarTotaisPorDespesa(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaConsultarTotaisPorDespesa(UCContasPagarServicos service, Scanner scanner, LoginUsuarioBD loginUsuarioBD) throws Exception {
         System.out.println("\n=== Consulta de Totais por Tipo de Despesa ===");
         System.out.print("Data Início (yyyy-MM-dd): ");
         LocalDate dataInicio = LocalDate.parse(scanner.nextLine());
@@ -190,7 +208,7 @@ public class AppContasPagar {
         System.out.print("Data Fim (yyyy-MM-dd): ");
         LocalDate dataFim = LocalDate.parse(scanner.nextLine());
 
-        List<model.ResumoDespesa> lista = service.consultarTotaisPorTipoDespesa(dataInicio, dataFim);
+        List<model.ResumoDespesa> lista = service.consultarTotaisPorTipoDespesa(dataInicio, dataFim, loginUsuarioBD);
 
         System.out.println("\n=== Totais por Motivo de Fatura (Período: " + dataInicio + " a " + dataFim + ") ===");
         if (lista.isEmpty()) {
@@ -209,12 +227,12 @@ public class AppContasPagar {
         }
     }
 
-    private void telaConsultarFornecedorComTipoTelefoneCompleto(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaConsultarFornecedorComTipoTelefoneCompleto(UCContasPagarServicos service, Scanner scanner, LoginUsuarioBD loginUsuarioBD) throws Exception {
         System.out.print("Digite o ID do Fornecedor: ");
         int idFornecedor = scanner.nextInt();
         scanner.nextLine();
 
-        List<TelefoneFornecedor> telefoneFornecedorList = service.consultarFornecedorComTipoTelefoneCompleto(idFornecedor);
+        List<TelefoneFornecedor> telefoneFornecedorList = service.consultarFornecedorComTipoTelefoneCompleto(idFornecedor, loginUsuarioBD);
 
         if (telefoneFornecedorList.isEmpty()) {
             System.out.println("Nenhum telefone completo encontrado para o fornecedor com ID informado.");
@@ -231,7 +249,7 @@ public class AppContasPagar {
         }
     }
 
-    private void telaAdicionarTelefoneCompletoFornecedor(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaAdicionarTelefoneCompletoFornecedor(UCContasPagarServicos service, Scanner scanner, LoginUsuarioBD loginUsuarioBD) throws Exception {
         System.out.print("Digite o ID do Fornecedor: ");
         int idFornecedor = scanner.nextInt();
         scanner.nextLine();
@@ -245,18 +263,18 @@ public class AppContasPagar {
         System.out.print("Digite o DDI: ");
         String ddi = scanner.nextLine();
 
-        service.adicionarTelefoneCompletoFornecedor(idFornecedor, numero, ddd, ddi);
+        service.adicionarTelefoneCompletoFornecedor(idFornecedor, numero, ddd, ddi, loginUsuarioBD);
 
         System.out.println("Telefone adicionado com sucesso!");
 
     }
 
-    private void telaRemoverFatura(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaRemoverFatura(UCContasPagarServicos service, Scanner scanner, LoginUsuarioBD loginUsuarioBD) throws Exception {
         System.out.print("Digite o número da fatura que deseja remover: ");
         int numeroFatura = scanner.nextInt();
         scanner.nextLine();
 
-        boolean removido = service.removerFatura(numeroFatura);
+        boolean removido = service.removerFatura(numeroFatura, loginUsuarioBD);
 
         if (removido) {
             System.out.println("Fatura removida com sucesso!");
