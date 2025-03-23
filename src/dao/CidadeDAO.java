@@ -13,11 +13,11 @@ public class CidadeDAO {
 
     public Cidade selecionarCidadePorId(Long id, Connection conexao) throws SQLException {
         String sql = """
-            SELECT c.idCidade        AS cidadeId,
-                   c.nome             AS cidadeNome,
-                   c.siglaUf          AS ufSigla
+            SELECT c.id_cidade,
+                   c.nome,
+                   c.siglaUf
             FROM cidade c
-            WHERE c.idCidade = ?;
+            WHERE c.id_cidade = ?;
         """;
 
         try (PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -25,11 +25,11 @@ public class CidadeDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Cidade cidade = new Cidade();
-                    cidade.setIdCidade(rs.getInt("cidadeId"));
-                    cidade.setNome(rs.getString("cidadeNome"));
+                    cidade.setIdCidade(rs.getInt("id_cidade"));
+                    cidade.setNome(rs.getString("nome"));
 
                     UnidadeFederativa uf = new UnidadeFederativa();
-                    uf.setSiglaUF(rs.getString("ufSigla"));
+                    uf.setSiglaUF(rs.getString("sigla_uf"));
                     cidade.setUnidadeFederativa(uf);
 
                     return cidade;
@@ -41,9 +41,9 @@ public class CidadeDAO {
 
     public List<Cidade> selecionarTodasCidades(Connection conexao) throws SQLException {
         String sql = """
-            SELECT c.idCidade,
-                   c.nome       AS cidadeNome,
-                   c.siglaUf   AS ufSigla
+            SELECT c.id_cidade,
+                   c.nome,
+                   c.sigla_uf,
             FROM cidade c
             ORDER BY c.nome;
         """;
@@ -55,11 +55,11 @@ public class CidadeDAO {
 
             while (rs.next()) {
                 Cidade cidade = new Cidade();
-                cidade.setIdCidade(rs.getInt("idCidade"));
-                cidade.setNome(rs.getString("cidadeNome"));
+                cidade.setIdCidade(rs.getInt("id_cidade"));
+                cidade.setNome(rs.getString("nome"));
 
                 UnidadeFederativa uf = new UnidadeFederativa();
-                uf.setSiglaUF(rs.getString("ufSigla"));
+                uf.setSiglaUF(rs.getString("sigla_uf"));
                 cidade.setUnidadeFederativa(uf);
 
                 cidades.add(cidade);

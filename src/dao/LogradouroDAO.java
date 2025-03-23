@@ -13,9 +13,9 @@ public class LogradouroDAO {
 
     public Logradouro selecionarLogradouroPorId(Integer id, Connection conexao) throws SQLException {
         String sql = """
-            SELECT l.idLogradouro, l.nome AS logradouro_nome, l.siglaTipoLogradouro
+            SELECT l.id_logradouro, l.nome AS logradouro_nome, l.sigla_tipo_logradouro
             FROM logradouro l
-            WHERE l.idLogradouro = ?;
+            WHERE l.id_logradouro = ?;
         """;
 
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
@@ -23,11 +23,11 @@ public class LogradouroDAO {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Logradouro logradouro = new Logradouro();
-                    logradouro.setIdLogradouro(resultSet.getInt("idLogradouro"));
-                    logradouro.setNome(resultSet.getString("logradouroNome"));
+                    logradouro.setIdLogradouro(resultSet.getInt("id_logradouro"));
+                    logradouro.setNome(resultSet.getString("logradouro_nome"));
 
                     TipoLogradouro tipo = new TipoLogradouro();
-                    tipo.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
+                    tipo.setSiglaTipoLogradouro(resultSet.getString("sigla_tipo_logradouro"));
                     logradouro.setTipoLogradouro(tipo);
 
                     return logradouro;
@@ -39,7 +39,7 @@ public class LogradouroDAO {
 
     public List<Logradouro> selecionarTodosLogradouros(Connection conexao) throws SQLException {
         String sql = """
-            SELECT l.idLogradouro, l.nome AS logradouro_nome, l.siglaTipoLogradouro
+            SELECT l.id_logradouro, l.nome, l.sigla_tipo_logradouro
             FROM logradouro l
             ORDER BY l.nome;
         """;
@@ -51,11 +51,11 @@ public class LogradouroDAO {
 
             while (resultSet.next()) {
                 Logradouro logradouro = new Logradouro();
-                logradouro.setIdLogradouro(resultSet.getInt("idLogradouro"));
+                logradouro.setIdLogradouro(resultSet.getInt("id_logradouro"));
                 logradouro.setNome(resultSet.getString("logradouro_nome"));
 
                 TipoLogradouro tipo = new TipoLogradouro();
-                tipo.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
+                tipo.setSiglaTipoLogradouro(resultSet.getString("sigla_tipo_logradouro"));
                 logradouro.setTipoLogradouro(tipo);
 
                 logradouros.add(logradouro);

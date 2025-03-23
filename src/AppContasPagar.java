@@ -1,10 +1,5 @@
+import model.*;
 import service.UCContasPagarServicos;
-import model.Fatura;
-import model.Fornecedor;
-import model.MotivoFatura;
-import model.EmailFornecedor;
-import model.TelefoneFornecedor;
-import model.ResumoDespesa;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +9,7 @@ import java.util.Scanner;
 public class AppContasPagar {
 
     public static void main(String[] args) {
+        AppContasPagar appContasPagar = new AppContasPagar();
         UCContasPagarServicos service = new UCContasPagarServicos();
         Scanner scanner = new Scanner(System.in);
 
@@ -23,6 +19,9 @@ public class AppContasPagar {
             System.out.println("1. Consultar faturas de um fornecedor");
             System.out.println("2. Lançar nova fatura para um fornecedor");
             System.out.println("3. Consultar totais por tipo de despesa em um período");
+            System.out.println("4. Consultar fornecedor com tipo complexo telefone completo");
+            System.out.println("5. Adicionar telefone completo ao fornecedor");
+            System.out.println("6. Remover fatura");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             int opc = scanner.nextInt();
@@ -31,13 +30,22 @@ public class AppContasPagar {
             try {
                 switch (opc) {
                     case 1:
-                        telaConsultarFaturasFornecedor(service, scanner);
+                        appContasPagar.telaConsultarFaturasFornecedor(service, scanner);
                         break;
                     case 2:
-                        telaLancarFatura(service, scanner);
+                        appContasPagar.telaLancarFatura(service, scanner);
                         break;
                     case 3:
-                        telaConsultarTotaisPorDespesa(service, scanner);
+                        appContasPagar.telaConsultarTotaisPorDespesa(service, scanner);
+                        break;
+                    case 4:
+                        appContasPagar.telaConsultarFornecedorComTipoTelefoneCompleto(service, scanner);
+                        break;
+                    case 5:
+                        appContasPagar.telaAdicionarTelefoneCompletoFornecedor(service, scanner);
+                        break;
+                    case 6:
+                        appContasPagar.telaRemoverFatura(service, scanner);
                         break;
                     case 0:
                         sair = true;
@@ -53,7 +61,7 @@ public class AppContasPagar {
         scanner.close();
     }
 
-    private static void telaConsultarFaturasFornecedor(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaConsultarFaturasFornecedor(UCContasPagarServicos service, Scanner scanner) throws Exception {
         System.out.print("Digite o ID do Fornecedor: ");
         int idFornecedor = scanner.nextInt();
         scanner.nextLine();
@@ -120,7 +128,7 @@ public class AppContasPagar {
         }
     }
 
-    private static void telaLancarFatura(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaLancarFatura(UCContasPagarServicos service, Scanner scanner) throws Exception {
         System.out.println("\n=== Lançar Nova Fatura ===");
 
         System.out.print("ID do Fornecedor: ");
@@ -174,7 +182,7 @@ public class AppContasPagar {
         }
     }
 
-    private static void telaConsultarTotaisPorDespesa(UCContasPagarServicos service, Scanner scanner) throws Exception {
+    private void telaConsultarTotaisPorDespesa(UCContasPagarServicos service, Scanner scanner) throws Exception {
         System.out.println("\n=== Consulta de Totais por Tipo de Despesa ===");
         System.out.print("Data Início (yyyy-MM-dd): ");
         LocalDate dataInicio = LocalDate.parse(scanner.nextLine());
@@ -200,4 +208,62 @@ public class AppContasPagar {
             System.out.printf("Total Geral: R$ %10.2f\n", totalGeral);
         }
     }
+
+    private void telaConsultarFornecedorComTipoTelefoneCompleto(UCContasPagarServicos service, Scanner scanner) throws Exception {
+        System.out.print("Digite o ID do Fornecedor: ");
+        int idFornecedor = scanner.nextInt();
+        scanner.nextLine();
+
+        List<TelefoneFornecedor> telefoneFornecedorList = service.consultarFornecedorComTipoTelefoneCompleto(idFornecedor);
+
+        if (telefoneFornecedorList.isEmpty()) {
+            System.out.println("Nenhum telefone completo encontrado para o fornecedor com ID informado.");
+            return;
+        }
+
+        System.out.println("\nTelefones do Fornecedor:");
+        for (TelefoneFornecedor tf : telefoneFornecedorList) {
+            System.out.printf("Telefone: %s | DDD: %s | DDI: %s | Fornecedor: %s%n",
+                    tf.getNumeroTelefone(),
+                    tf.getDdd().getNumeroDDD(),
+                    tf.getDdi().getNumeroDDI(),
+                    tf.getFornecedor().getNomeFornecedor());
+        }
+    }
+
+    private void telaAdicionarTelefoneCompletoFornecedor(UCContasPagarServicos service, Scanner scanner) throws Exception {
+        System.out.print("Digite o ID do Fornecedor: ");
+        int idFornecedor = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Digite o número do telefone: ");
+        String numero = scanner.nextLine();
+
+        System.out.print("Digite o DDD: ");
+        String ddd = scanner.nextLine();
+
+        System.out.print("Digite o DDI: ");
+        String ddi = scanner.nextLine();
+
+        service.adicionarTelefoneCompletoFornecedor(idFornecedor, numero, ddd, ddi);
+
+        System.out.println("Telefone adicionado com sucesso!");
+
+    }
+
+    private void telaRemoverFatura(UCContasPagarServicos service, Scanner scanner) throws Exception {
+        System.out.print("Digite o número da fatura que deseja remover: ");
+        int numeroFatura = scanner.nextInt();
+        scanner.nextLine();
+
+        boolean removido = service.removerFatura(numeroFatura);
+
+        if (removido) {
+            System.out.println("Fatura removida com sucesso!");
+        } else {
+            System.out.println("Fatura não encontrada ou não foi possível remover.");
+        }
+    }
+
+
 }

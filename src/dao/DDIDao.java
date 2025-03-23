@@ -10,13 +10,13 @@ import java.util.List;
 public class DDIDao {
 
     public static DDI selectDDIPorNumero(String numero, Connection conexao) throws Exception {
-        String sql = "SELECT numeroDDI FROM ddi WHERE numeroDDI = ?";
+        String sql = "SELECT numero_ddi FROM ddi WHERE numero_ddi = ?";
 
         try (PreparedStatement cmd = conexao.prepareStatement(sql)) {
             cmd.setString(1, numero);
             try (ResultSet result = cmd.executeQuery()) {
                 if (result.next()) {
-                    return new DDI(result.getString("numeroDDI"));
+                    return new DDI(result.getString("numero_ddi"));
                 }
             }
         } catch (Exception e) {

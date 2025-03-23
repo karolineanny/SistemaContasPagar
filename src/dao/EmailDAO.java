@@ -12,14 +12,14 @@ public class EmailDAO {
 
     public static List<EmailFornecedor> selectTodosEmailPorFornecedor(Fornecedor fornecedor, Connection conexao) throws Exception {
         List<EmailFornecedor> emails = new ArrayList<>();
-        String sql = "SELECT emailFornecedor, idFornecedor FROM emailfornecedor WHERE idFornecedor = ?";
+        String sql = "SELECT email_fornecedor, id_fornecedor FROM email_fornecedor WHERE id_fornecedor = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, fornecedor.getIdFornecedor());
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     EmailFornecedor emailFornecedor = new EmailFornecedor();
-                    emailFornecedor.setEmailFornecedor(rs.getString("emailFornecedor"));
+                    emailFornecedor.setEmailFornecedor(rs.getString("email_fornecedor"));
                     emailFornecedor.setFornecedor(fornecedor);
                     emails.add(emailFornecedor);
                 }
@@ -32,7 +32,7 @@ public class EmailDAO {
     }
 
     public static void insertEmailsFornecedor(Fornecedor fornecedor, List<EmailFornecedor> emails, Connection conexao) throws Exception {
-        String sql = "INSERT INTO emailfornecedor (emailFornecedor, idFornecedor) VALUES (?, ?)";
+        String sql = "INSERT INTO email_fornecedor (email_fornecedor, id_fornecedor) VALUES (?, ?)";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             for (EmailFornecedor email : emails) {
                 stmt.setString(1, email.getEmailFornecedor());
@@ -46,15 +46,15 @@ public class EmailDAO {
     }
 
     public static EmailFornecedor selecionarEmailFornecedorPorEmail(String email, Connection conexao) throws Exception {
-        String sql = "SELECT emailFornecedor, idFornecedor FROM emailfornecedor WHERE emailFornecedor = ?";
+        String sql = "SELECT email_fornecedor, id_fornecedor FROM email_fornecedor WHERE email_fornecedor = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     EmailFornecedor emailFornecedor = new EmailFornecedor();
-                    emailFornecedor.setEmailFornecedor(rs.getString("emailFornecedor"));
+                    emailFornecedor.setEmailFornecedor(rs.getString("email_fornecedor"));
                     Fornecedor fornecedor = new Fornecedor();
-                    fornecedor.setIdFornecedor(rs.getInt("idFornecedor"));
+                    fornecedor.setIdFornecedor(rs.getInt("id_fornecedor"));
                     emailFornecedor.setFornecedor(fornecedor);
                     return emailFornecedor;
                 }

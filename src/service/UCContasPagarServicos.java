@@ -260,4 +260,58 @@ public class UCContasPagarServicos {
             e.printStackTrace();
         }
     }
+
+    public List<TelefoneFornecedor> consultarFornecedorComTipoTelefoneCompleto(Integer idFornecedor) throws Exception {
+        if (idFornecedor == null || idFornecedor <= 0) {
+            throw new Exception("ID de Fornecedor inválido!");
+        }
+
+        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+            conn.setAutoCommit(false);
+            try {
+                List<TelefoneFornecedor> telefoneFornecedorList = telefoneDAO.selecionarFornecedorPorIdComTelefoneCompleto(idFornecedor, conn);
+                conn.commit();
+                return telefoneFornecedorList;
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro ao consultar telefones completos do fornecedor " + idFornecedor, e);
+            }
+        }
+    }
+
+    public void adicionarTelefoneCompletoFornecedor(int idFornecedor, String numero, String ddd, String ddi) throws Exception {
+        if (numero == null || numero.isBlank() || ddd == null || ddi == null) {
+            throw new Exception("Dados do telefone inválidos.");
+        }
+
+        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+            conn.setAutoCommit(false);
+            try {
+                fornecedorDAO.inserirTelefoneCompleto(idFornecedor, numero, ddd, ddi, conn);
+                conn.commit();
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro ao inserir telefone completo.", e);
+            }
+        }
+    }
+
+    public boolean removerFatura(int numeroFatura) throws Exception {
+        if (numeroFatura <= 0) {
+            throw new Exception("Número de fatura inválido.");
+        }
+
+        try (Connection conn = new ConexaoBD().getConexaoComBD()) {
+            conn.setAutoCommit(false);
+            try {
+                boolean removido = faturaDAO.removerPorNumero(numeroFatura, conn);
+                conn.commit();
+                return removido;
+            } catch (Exception e) {
+                conn.rollback();
+                throw new Exception("Erro ao remover fatura: " + numeroFatura, e);
+            }
+        }
+    }
+
 }

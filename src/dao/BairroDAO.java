@@ -11,14 +11,14 @@ import model.Bairro;
 public class BairroDAO {
 
     public Bairro selecionarBairroPorId(Integer id, Connection conexao) throws SQLException {
-        String sql = "SELECT idBairro, nome FROM bairro WHERE idBairro = ?;";
+        String sql = "SELECT id_bairro, nome FROM bairro WHERE id_bairro = ?;";
 
         try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Bairro bairro = new Bairro();
-                    bairro.setIdBairro(resultSet.getInt("idBairro"));
+                    bairro.setIdBairro(resultSet.getInt("id_bairro"));
                     bairro.setNome(resultSet.getString("nome"));
                     return bairro;
                 }
@@ -29,7 +29,7 @@ public class BairroDAO {
 
     public List<Bairro> selecionarTodosBairros(Connection conexao) throws SQLException {
         String sql = """
-            SELECT b.idBairro, b.nome AS bairroNome
+            SELECT b.id_bairro, b.nome
             FROM bairro b
             ORDER BY b.nome;
             """;
@@ -41,8 +41,8 @@ public class BairroDAO {
 
             while (resultSet.next()) {
                 Bairro bairro = new Bairro();
-                bairro.setIdBairro(resultSet.getInt("idBairro"));
-                bairro.setNome(resultSet.getString("bairroNome"));
+                bairro.setIdBairro(resultSet.getInt("id_bairro"));
+                bairro.setNome(resultSet.getString("nome"));
                 bairros.add(bairro);
             }
         }

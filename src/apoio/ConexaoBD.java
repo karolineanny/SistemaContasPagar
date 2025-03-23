@@ -6,18 +6,21 @@ import java.sql.SQLException;
 
 public class ConexaoBD {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/bd_contas?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    // Outros usuários
+    // usuario_admin, usuario_leitor, usuario_insercao
+
+    private static final String URL = "jdbc:postgresql://localhost:5432/bd_contas";
+    private static final String USER = "usuario_insercao";
+    private static final String PASSWORD = "insercao";
 
     public Connection getConexaoComBD() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("org.postgresql.Driver");
 
             return DriverManager.getConnection(URL, USER, PASSWORD);
 
         } catch (ClassNotFoundException e) {
-            throw new SQLException("Driver do MySQL não encontrado.", e);
+            throw new SQLException("Driver do Postgresql não encontrado.", e);
         }
     }
 }

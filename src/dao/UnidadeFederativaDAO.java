@@ -12,9 +12,9 @@ public class UnidadeFederativaDAO {
 
     public List<UnidadeFederativa> selecionarTodasUnidadesFederativas(Connection conexao) throws SQLException {
         String sql = """
-            SELECT uf.siglaUF, uf.nomeUF
-            FROM unidadefederativa uf
-            ORDER BY uf.nomeUF;
+            SELECT uf.sigla_uf, uf.nome_uf
+            FROM unidade_federativa uf
+            ORDER BY uf.nome_uf;
         """;
 
         List<UnidadeFederativa> unidadesFederativas = new ArrayList<>();
@@ -24,8 +24,8 @@ public class UnidadeFederativaDAO {
 
             while (resultSet.next()) {
                 UnidadeFederativa uf = new UnidadeFederativa();
-                uf.setSiglaUF(resultSet.getString("siglaUF"));
-                uf.setNomeUF(resultSet.getString("nomeUF"));
+                uf.setSiglaUF(resultSet.getString("sigla_uf"));
+                uf.setNomeUF(resultSet.getString("nome_uf"));
                 unidadesFederativas.add(uf);
             }
         }

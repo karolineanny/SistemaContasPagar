@@ -12,9 +12,9 @@ public class TipoLogradouroDAO {
 
     public List<TipoLogradouro> selecionarTodosTiposLogradouro(Connection conexao) throws SQLException {
         String sql = """
-            SELECT tl.siglaTipoLogradouro, tl.nomeTipoLogradouro
-            FROM tipologradouro tl
-            ORDER BY tl.nomeTipoLogradouro;
+            SELECT tl.sigla_tipo_logradouro, tl.nome_tipo_logradouro
+            FROM tipo_logradouro tl
+            ORDER BY tl.nome_tipo_logradouro;
         """;
 
         List<TipoLogradouro> tiposLogradouro = new ArrayList<>();
@@ -24,8 +24,8 @@ public class TipoLogradouroDAO {
 
             while (resultSet.next()) {
                 TipoLogradouro tipoLogradouro = new TipoLogradouro();
-                tipoLogradouro.setSiglaTipoLogradouro(resultSet.getString("siglaTipoLogradouro"));
-                tipoLogradouro.setNomeTipoLogradouro(resultSet.getString("nomeTipoLogradouro"));
+                tipoLogradouro.setSiglaTipoLogradouro(resultSet.getString("sigla_tipo_logradouro"));
+                tipoLogradouro.setNomeTipoLogradouro(resultSet.getString("nome_tipo_logradouro"));
                 tiposLogradouro.add(tipoLogradouro);
             }
         }
